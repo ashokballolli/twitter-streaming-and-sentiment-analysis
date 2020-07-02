@@ -1,0 +1,14 @@
+twitter:
+  consumer_key: consumer_key_value
+  consumer_secret: consumer_secret_value
+  access_token: access_token_value
+  access_token_secret: access_token_secret_value
+
+redis:
+  host_name: localhost
+  port: 6379
+  user_name: dummy
+  password: dummy
+
+other:
+  key: value
