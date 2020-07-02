@@ -12,10 +12,11 @@ class Config:
             return self.conf.get(confKeys[0])[confKeys[1]]
 
 
+# How to read config.yaml keys
+# Option - 01
 # c = Config()
 # redis_conf = c.get_property("twitter")
 # authKey = redis_conf["consumer_key"]
-#
-# print(authKey)
-#
+
+# Option - 02
 # print(c.get_property("twitter.consumer_key"))
