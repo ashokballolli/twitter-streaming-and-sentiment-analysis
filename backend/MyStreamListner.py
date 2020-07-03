@@ -1,6 +1,8 @@
 import tweepy
 from utils.config import Config
 import datetime
+from textblob import TextBlob
+import json
 
 conf = Config()
 twitter_conf = conf.get_property("twitter")
@@ -20,18 +22,23 @@ class MyStreamListener(tweepy.StreamListener):
     override tweepy.StreamListener to add logic to on_status
     """
 
-    def on_status(self, status):
-        if ('RT @' not in status.text):
+    def on_status(self, tweet):
+        if ('RT @' not in tweet.text):
+            polarity, subjectivity = self.getSentimentAttr(tweet.text)
+
             tweet_entity = {
-                'id_str': status.id_str,
-                'text': status.text,
-                'username': status.user.screen_name,
-                'name': status.user.name,
-                'profile_image_url': status.user.profile_image_url,
+                'id_str': tweet.id_str,
+                'text': tweet.text,
+                'polarity': polarity,
+                'subjectivity': subjectivity,
+                'username': tweet.user.screen_name,
+                'name': tweet.user.name,
+                'tweet_url': f"https://twitter.com/user/status/{tweet.id}",
                 'received_at': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }
 
-            print(tweet_entity)
+            print(json.dumps(tweet_entity, indent=4))
+
 
     def on_error(self, status_code):
         if status_code == 420:
@@ -40,10 +47,14 @@ class MyStreamListener(tweepy.StreamListener):
 
         # returning non-False reconnects the stream, with backoff.
 
+    def getSentimentAttr(self, text):
+        blob = TextBlob(text)
+        sentiment = blob.sentiment
+        polarity = sentiment.polarity
+        subjectivity = sentiment.subjectivity
+        return polarity, subjectivity
+
 
 myStreamListener = MyStreamListener()
 myStream = tweepy.Stream(auth=api.auth, listener=myStreamListener)
-myStream.filter(track=['python', 'scala'])
-
-
-# twitter stream listner and track the words
+myStream.filter(track=['spark 3.0', 'airflow', 'data engineer'])
