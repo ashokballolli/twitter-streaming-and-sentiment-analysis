@@ -22,3 +22,9 @@ class RedisStore:
         if self.trim_count > 100:
             self.redis_db.ltrim(redisKey, 0, self.num_tweets)
             self.trim_count = 0
+
+    def getTweets(self, redisKey="tweets", limit=15):
+        tweets = []
+        for tweet in self.redis_db.lrange(redisKey, 0, limit - 1):
+            tweets.append(json.loads(tweet))
+        return tweets
