@@ -3,6 +3,8 @@ from utils.config import Config
 import datetime
 from textblob import TextBlob
 import json
+from backend.RedisStore import RedisStore
+
 
 conf = Config()
 twitter_conf = conf.get_property("twitter")
@@ -15,7 +17,7 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth)
-
+redisStore = RedisStore()
 
 class MyStreamListener(tweepy.StreamListener):
     """
@@ -38,6 +40,7 @@ class MyStreamListener(tweepy.StreamListener):
             }
 
             print(json.dumps(tweet_entity, indent=4))
+            redisStore.push(tweet_entity)
 
 
     def on_error(self, status_code):
@@ -57,4 +60,4 @@ class MyStreamListener(tweepy.StreamListener):
 
 myStreamListener = MyStreamListener()
 myStream = tweepy.Stream(auth=api.auth, listener=myStreamListener)
-myStream.filter(track=['spark 3.0', 'airflow', 'data engineer'])
+myStream.filter(track=['spark 3.0', 'airflow', 'data engineer', 'scala', 'python'])
