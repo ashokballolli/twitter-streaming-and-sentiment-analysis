@@ -36,6 +36,7 @@ class MyStreamListener(tweepy.StreamListener):
                 'username': tweet.user.screen_name,
                 'name': tweet.user.name,
                 'tweet_url': f"https://twitter.com/user/status/{tweet.id}",
+                'profile_image_url' : tweet.user.profile_image_url,
                 'received_at': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }
 

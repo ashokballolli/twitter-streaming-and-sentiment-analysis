@@ -1,0 +1,18 @@
+brew install redis
+brew services start redis
+redis-cli ping
+brew uninstall redis
+rm ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+
+redis.conf #uncomment requirepass <password>
+
+redis 127.0.0.1:6379> AUTH PASSWORD
+(error) ERR Client sent AUTH, but no password is set
+redis 127.0.0.1:6379> CONFIG SET requirepass "mypass"
+OK
+redis 127.0.0.1:6379> AUTH mypass
+
+>/ redis-cli
+127.0.0.1:6379> AUTH <password>
+
+

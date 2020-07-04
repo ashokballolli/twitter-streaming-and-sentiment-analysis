@@ -1,7 +1,7 @@
 import redis
 import json
 from utils.config import Config
-
+from backend.TweetDomain import TweetDomain
 
 class RedisStore:
     redis_conf = Config().get_property("redis")
@@ -26,5 +26,7 @@ class RedisStore:
     def getTweets(self, redisKey="tweets", limit=15):
         tweets = []
         for tweet in self.redis_db.lrange(redisKey, 0, limit - 1):
-            tweets.append(json.loads(tweet))
+            tweetJson = json.loads(tweet)
+            print(json.dumps(tweetJson, indent=4, sort_keys=True))
+            tweets.append(TweetDomain(tweetJson))
         return tweets
