@@ -7,7 +7,6 @@ twitter:
 redis:
   host_name: localhost
   port: 6379
-  user_name: dummy
   password: dummy
 
 other:
