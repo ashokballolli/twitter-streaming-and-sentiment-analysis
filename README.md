@@ -1,4 +1,4 @@
-# tweeter-streaming-and-sentiment-analysis  
+# Twitter Streaming And Sentiment Analysis  
   
 **Libraries Used:**  
 ***Tweepy:*** An easy-to-use Python library for accessing the Twitter API
